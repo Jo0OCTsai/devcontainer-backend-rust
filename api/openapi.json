@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "todo-backend-rust",
+    "version": "0.1.0",
+    "description": "todo backend（Rust 栈适配镜像，对齐 devcontainer-backend 骨架阶段的 API 面）"
+  },
+  "paths": {
+    "/api/v1/health/": {
+      "get": {
+        "operationId": "health",
+        "description": "健康检查端点（db 为内存存储占位）。",
+        "responses": {
+          "200": {
+            "description": "服务健康",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "service": { "type": "string" },
+                    "db": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
