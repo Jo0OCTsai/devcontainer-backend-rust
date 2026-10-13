@@ -10,8 +10,9 @@ todo app 后端的 Rust 镜像（骨架阶段）：health 端点 + 静态 OpenAP
 ## 技术栈
 
 - Rust 2021；`tiny_http`（轻量 HTTP）+ `serde`/`serde_json`——刻意轻依赖，降低首例接入变量
-- lint：`cargo fmt --check` + `cargo clippy -- -D warnings`（复杂度类 lint 随首例验证定版加入）
-- 测试：`cargo test`（业务层纯函数表驱动）
+- lint：`cargo fmt --check` + `cargo clippy --all-targets -- -D warnings -W clippy::cognitive_complexity`
+  （复杂度门禁：**cognitive-complexity-threshold = 15**，`clippy.toml`——经 threshold=1 实证配置生效）
+- 测试：`cargo test`（业务层纯函数表驱动；覆盖率棘轮地板 69，测量口径 = cargo-llvm-cov TOTAL）
 
 ## 环境与命令
 
@@ -42,7 +43,7 @@ backend-rust/
 
 ## 约定（镜像 backend 的分层边界）
 
-- **依赖方向**：`main → app` 单向；`app` 模块禁止反向依赖入口层。将来多模块膨胀时
-  **优先 crate 拆分**（Cargo workspace：crate 边界由编译器强制 pub 可见性 + 显式依赖声明，
-  这是 Rust 的天然守卫），而非 path 级规则。
+- **依赖方向**：`main → app` 单向；`app` 模块禁止反向依赖入口层——**单 crate 下语言级强制**
+  （bin crate root 不可被 mod 反向引用）。多模块膨胀时**优先 crate 拆分**（Cargo workspace：
+  crate 边界由编译器强制 + 守卫读 Cargo.toml 依赖图机检），而非 path 级规则。
 - API 形状（路径、JSON 字段、尾斜杠、405/404 语义）与 `backend/` 保持一致，漂移即 bug。

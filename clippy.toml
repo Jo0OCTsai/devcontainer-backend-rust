@@ -1,0 +1,3 @@
+# clippy 复杂度门禁阈值（lint_check 中以 -W clippy::cognitive_complexity 提升为 warning，
+# 再经 -D warnings 变 error；语义对齐 ruff C901 / golangci-lint gocyclo / 质量棘轮口径）
+cognitive-complexity-threshold = 15
